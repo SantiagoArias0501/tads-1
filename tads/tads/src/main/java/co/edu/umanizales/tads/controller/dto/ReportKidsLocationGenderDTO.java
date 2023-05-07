@@ -1,5 +1,7 @@
 package co.edu.umanizales.tads.controller.dto;
 
+import co.edu.umanizales.tads.controller.dto.GenderQuantityDTO;
+import co.edu.umanizales.tads.controller.dto.LocationGenderQuantityDTO;
 import co.edu.umanizales.tads.model.Location;
 import lombok.Data;
 

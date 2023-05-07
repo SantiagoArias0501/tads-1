@@ -9,23 +9,24 @@ import javax.validation.constraints.*;
 @Data
 @AllArgsConstructor
 public class Kid {
-    @NotNull
-    @NotEmpty
-    @Size
+   @NotBlank
+   @Size(max = 13)
     private String identification;
-    @NotNull
-    @NotEmpty
-    @Size
+    @NotBlank
+    @Size(max = 20)
     private String name;
-    @Positive
-    private byte age;
     @NotNull
+    @Min(1)
+    @Max(15)
+    private byte age;
+    @Pattern(regexp = "^[MF]^",message = "el genero debe ser 'M' o 'f'")
     private char gender;
     @Valid
-    @NotNull
+    @NotNull(message = "debe llenar este campo")
     private Location location;
 
-    public Kid(String identification,String name , byte age){
+
+    public Kid(String identification, String name, byte age) {
 
     }
 }

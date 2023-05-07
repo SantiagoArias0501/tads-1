@@ -1,9 +1,8 @@
 package co.edu.umanizales.tads.service;
 
-import co.edu.umanizales.tads.ListSEException.ListSEException;
+import co.edu.umanizales.tads.controller.dto.ReportKidsLocationGenderDTO;
 import co.edu.umanizales.tads.model.Kid;
 import co.edu.umanizales.tads.model.ListSE;
-import co.edu.umanizales.tads.model.Node;
 import lombok.Data;
 import org.springframework.stereotype.Service;
 
@@ -21,11 +20,14 @@ public class ListSEService {
     public int getCountKidsBylocationsCode(String code){return kids.getCountKidsByLocationCode(code);}
     public void deleteKidbyAge(byte age){kids.DeleteByAge(age);}
     public void gainPositionKid(String id,int gain){kids.gainPositionKid(id,gain);}
-    public int getCountKidsBylocationAndGender(String code){return kids.getCountKidsBylocationAndGenderM(code);}
-    public int getCountKidsByLocationAndGender(String code){return  kids.getCountKidsBylocationAndGenderF(code);}
     public void IntercaleBoyandGirl(){kids.IntercaleBoyandGirl();}
     public void LosePositionKid(String id , int lose){kids.LosePositionKid(id, lose);}
-
+    public void orderBoysToStart(){kids.orderBoysToStart();}
+    public float averageAge(){return kids.averageAge();}
+    public  String reportByAge(){return kids.reportByAge();}
+    public void addToFinalNameChar(String letter) {kids.addToFinalNameChar(letter);}
+    public void getReportKidsByLocationGendersByAge(byte age , ReportKidsLocationGenderDTO report){
+        kids.getReportKidsByLocationGendersByAge(age,report);}
 
 
 }

@@ -1,8 +1,11 @@
 package co.edu.umanizales.tads.ListSEException;
 
 public class ListSEException extends Exception{
-    public ListSEException (String message ){
+    private final String code;
+
+    public ListSEException (String code , String message ){
         super(message);
+        this.code = code;
     }
 
 }

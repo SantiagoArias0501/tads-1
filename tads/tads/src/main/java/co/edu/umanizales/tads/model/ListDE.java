@@ -1,14 +1,17 @@
 package co.edu.umanizales.tads.model;
 
+import co.edu.umanizales.tads.ListSEException.ListDEException;
+import co.edu.umanizales.tads.controller.dto.PetDTO;
+import co.edu.umanizales.tads.controller.dto.ReportPetsLocationGenderDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
 @AllArgsConstructor
 public class ListDE {
-private NodeDE headDE;
-private int size ;
-private int countDE;
+    private NodeDE headDE;
+    private int size;
+    private int countDE;
 
     public ListDE() {
 
@@ -27,8 +30,9 @@ private int countDE;
     }
     //get Kid By id
 
-    public Pet getKidByidDE(String identification) {
+    public void getPetByidDE(String identification) {
         NodeDE temp = headDE;
+
         if (headDE != null) {
             while (temp != null) {
                 temp.getNext();
@@ -39,11 +43,11 @@ private int countDE;
 
             }
         }
-        Pet pet =new Pet(temp.getData().getIdentificationDE(),temp.getData().getName(),temp.getData().getAgeDE());
-        return pet;
-
+        Pet pet = new Pet(temp.getData().getName(), temp.getData().getBred(),
+                temp.getData().getIdentificationDE(),temp.getData().getAgeDE(),
+                temp.getData().getGenderDE(),temp.getData().getOwner(),temp.getData().getLocation());
     }
-
+//(temp.getData().getIdentificationDE(), temp.getData().getName(),temp.getAgeDE())
     //get in pos by id
     public int getPosByIdDE(String id) {
         NodeDE temp = headDE;
@@ -54,21 +58,23 @@ private int countDE;
         }
         return (temp != null) ? acum : -1;
     }
+
     //añadir por posicion
-    public void addbypositionDE(Pet pet,int position){
+    public void addbypositionDE(Pet pet, int position) {
         NodeDE newNodoDE = new NodeDE(pet);
-        if (position ==0){
+        if (position == 0) {
             newNodoDE.setNext(headDE);
             headDE = newNodoDE;
-        }else {
+        } else {
             NodeDE act = headDE;
-            for (int i = 1; i < position - 1;i++){
+            for (int i = 1; i < position - 1; i++) {
                 act = act.getNext();
             }
             newNodoDE.setNext(act.getNext());
             act.setNext(newNodoDE);
         }
     }
+
     //metodo para añadir nuevo nodo y nuevo niño en un posicion
     public void addInposDE(Pet pet, int position) {
         NodeDE temp = headDE;
@@ -111,7 +117,7 @@ private int countDE;
         size++;
     }
 
-    public void addToEnd(Pet pet){
+    public void addToEnd(Pet pet) {
         if (headDE != null) {
             NodeDE newNodeDE = new NodeDE(pet);
             NodeDE temp = headDE;
@@ -120,11 +126,12 @@ private int countDE;
             }
             temp.setNext(newNodeDE);
             newNodeDE.setPrev(temp);
-        }else {
+        } else {
             headDE = new NodeDE(pet);
         }
         size++;
     }
+
     //3
     public void interposeFemaleandMale() {
         if (headDE != null) {
@@ -175,112 +182,343 @@ private int countDE;
             }
         }
     }
-// 4 eliminar por edad dada
-public void deleteByAge(byte ageDE) {
-    NodeDE temp = headDE;
-    ListDE listDE1 = new ListDE();
-    NodeDE tail = null;
-    while (temp != null) {
-        if (temp.getData().getAgeDE() != ageDE) {
-            NodeDE newNodeDE = new NodeDE(temp.getData());
-            if (listDE1.getHeadDE() == null) {
-                listDE1.setHeadDE(newNodeDE);
-            } else {
-                tail.setNext(newNodeDE);
-                newNodeDE.setPrev(tail);
-            }
-            tail = newNodeDE;
-        }
-        temp = temp.getNext();
-    }
-    headDE = listDE1.getHeadDE();
-    while (headDE.getPrev() != null) {
-        headDE = headDE.getPrev();
-    }
-}
-//5
-public float averageAgeDE() {
-    if (headDE != null) {
+
+    // 4 eliminar por edad dada
+    public void deletePetByAgeDE(byte ageDE) {
         NodeDE temp = headDE;
-        int count = 0;
-        int agesDE = 0;
-        while (temp.getNext() != null) {
+        ListDE listDE1 = new ListDE();
+        NodeDE tail = null;
+        while (temp != null) {
+            if (temp.getData().getAgeDE() != ageDE) {
+                NodeDE newNodeDE = new NodeDE(temp.getData());
+                if (listDE1.getHeadDE() == null) {
+                    listDE1.setHeadDE(newNodeDE);
+                } else {
+                    tail.setNext(newNodeDE);
+                    newNodeDE.setPrev(tail);
+                }
+                tail = newNodeDE;
+            }
+            temp = temp.getNext();
+        }
+        headDE = listDE1.getHeadDE();
+        while (headDE.getPrev() != null) {
+            headDE = headDE.getPrev();
+        }
+    }
+
+    //5
+    public float averageAgeDE() {
+        if (headDE != null) {
+            NodeDE temp = headDE;
+            int count = 0;
+            int agesDE = 0;
+            while (temp.getNext() != null) {
+                count++;
+                agesDE = agesDE + temp.getData().getAgeDE();
+                temp = temp.getNext();
+            }
             count++;
             agesDE = agesDE + temp.getData().getAgeDE();
-            temp = temp.getNext();
-        }
-        count++;
-        agesDE = agesDE + temp.getData().getAgeDE();
-        float averageDE = (float) agesDE / count;
-        NodeDE current = temp.getPrev();
-        while (current != null) {
-            count++;
-            agesDE = agesDE + current.getData().getAgeDE();
-            current = current.getPrev();
-        }
-        return (float) agesDE / count;
-    } else {
-        return (int) 0;
-    }
-}
-//7
-public void gainPositionKidDE(String identification, int gain) {
-    NodeDE temp = headDE;
-    int sum = 0;
-    ListDE listDE = new ListDE();
-    if (headDE != null) {
-        while (temp != null && !temp.getData().getIdentificationDE().equals(identification)) {
-            listDE.addDE(temp.getData());
-            temp = temp.getNext();
-        }
-        if (temp != null) {
-            listDE.addDE(temp.getData());
+            float averageDE = (float) agesDE / count;
+            NodeDE current = temp.getPrev();
+            while (current != null) {
+                count++;
+                agesDE = agesDE + current.getData().getAgeDE();
+                current = current.getPrev();
+            }
+            return (float) agesDE / count;
+        } else {
+            return (int) 0;
         }
     }
-    sum = gain - getPosByIdDE(identification);
-    listDE.addInposDE(getKidByidDE(identification), sum);
-    NodeDE act = listDE.getHeadDE();
-    while (act != null) {
-        addDE(act.getData());
-        act = act.getNext();
-    }
-}
-//8
-public void LosePositionPetDE(String identification, int lose) {
-    NodeDE temp = headDE;
-    int sum = 0;
-    ListDE listDE = new ListDE();
-    if (headDE != null) {
-        while (temp != null && !temp.getData().getIdentificationDE().equals(identification)) {
-            listDE.addDE(temp.getData());
-            temp = temp.getNext();
-        }
-        if (temp != null) {
-            listDE.addDE(temp.getData());
-        }
-    }
-    sum = lose + getPosByIdDE(identification);
-    listDE.addInposDE(getKidByidDE(identification), sum);
-    NodeDE act = listDE.getHeadDE();
-    NodeDE prev = null;
-    while (act != null) {
-        act.setPrev(prev);
-        addDE(act.getData());
-        prev = act;
-        act = act.getNext();
-    }
-}
-//9
-public int rangeByAgeDE(int min, int max) {
-    NodeDE temp = headDE;
-    int count = 0;
-    while (temp != null) {
-        if (temp.getData().getAgeDE() > min && temp.getData().getAgeDE() < max) {
-            count++;
-        }
-        temp = temp.getNext();
-    }
-    return count;
-}
 
+    //7
+    public void gainPositionKidDE(String identification, int gain) {
+        NodeDE temp = headDE;
+        int sum = 0;
+        ListDE listDE = new ListDE();
+        if (headDE != null) {
+            while (temp != null && !temp.getData().getIdentificationDE().equals(identification)) {
+                listDE.addDE(temp.getData());
+                temp = temp.getNext();
+            }
+            if (temp != null) {
+                listDE.addDE(temp.getData());
+            }
+        }
+        sum = gain - getPosByIdDE(identification);
+        listDE.addInposDE(getKidByidDE(identification), sum);
+        NodeDE act = listDE.getHeadDE();
+        while (act != null) {
+            addDE(act.getData());
+            act = act.getNext();
+        }
+    }
+
+    //8
+    public void LosePositionPetDE(String identification, int lose) {
+        NodeDE temp = headDE;
+        int sum = 0;
+        ListDE listDE = new ListDE();
+        if (headDE != null) {
+            while (temp != null && !temp.getData().getIdentificationDE().equals(identification)) {
+                listDE.addDE(temp.getData());
+                temp = temp.getNext();
+            }
+            if (temp != null) {
+                listDE.addDE(temp.getData());
+            }
+        }
+        sum = lose + getPosByIdDE(identification);
+        listDE.addInposDE(getKidByidDE(identification), sum);
+        NodeDE act = listDE.getHeadDE();
+        NodeDE prev = null;
+        while (act != null) {
+            act.setPrev(prev);
+            addDE(act.getData());
+            prev = act;
+            act = act.getNext();
+        }
+    }
+
+    //9
+    public String reportByAgeDE() {
+        int quan1 = 0;
+        int quan2 = 0;
+        int quan3 = 0;
+        int quan4 = 0;
+        int quan5 = 0;
+        NodeDE temp = this.headDE;
+        if (this.headDE != null) {
+            while (temp != null) {
+                if (temp.getData().getAgeDE() >= 0 && temp.getData().getAgeDE() <= 3) {
+                    quan1++;
+                } else if (temp.getData().getAgeDE() > 2 && temp.getData().getAgeDE() <= 6) {
+                    quan2++;
+                } else if (temp.getData().getAgeDE() > 6 && temp.getData().getAgeDE() <= 9) {
+                    quan3++;
+                } else if (temp.getData().getAgeDE() > 9 && temp.getData().getAgeDE() <= 12) {
+                    quan4++;
+                } else if (temp.getData().getAgeDE() > 12 && temp.getData().getAgeDE() <= 15) {
+                    quan5++;
+                }
+                temp = temp.getNext();
+            }
+        }
+        return "mascotas entre 0 y 3 años :"+quan1+"mascotas entre 4 y 6 años "+quan2+
+                "mascotas entre 7 y 9 años "+quan3+"mascotas entre 10 y 12 años "+quan4+
+                "mascotas entre 13 y 15 años"+quan5;
+    }
+
+
+//10
+    public void addToFinalNameCharDE(String letter)throws ListDEException {
+        if (headDE!=null){
+            ListDE listCp=new ListDE();
+            NodeDE temp = headDE;
+            if (temp.getData().getName().startsWith(letter)){
+                listCp.addDE(temp.getData());
+                temp=temp.getNext();
+            }else{
+                listCp.addDE(temp.getData());
+                temp = temp.getNext();
+            }
+            headDE = listCp.getHeadDE();
+        }
+    }
+
+    public void changeExtremesDE(){
+        if (this.headDE !=null && this.headDE.getNext()!=null)
+        {
+            NodeDE temp = this.headDE;
+            while(temp.getNext()!=null)
+            {
+                temp = temp.getNext();
+            }
+
+            Pet copy = this.headDE.getData();
+            this.headDE.setData(temp.getData());
+            temp.setData(copy);
+        }
+    }
+
+
+
+    public int getCountKidsByLocationCode(String code) {
+        int count = 0;
+        if (this.headDE != null) {
+            NodeDE temp = this.headDE;
+            while (temp != null) {
+                if (temp.getData().getLocation().getCode().equals(code)) {
+                    count++;
+                }
+                temp = temp.getNext();
+            }
+        }
+        return count;
+    }
+
+    public int verifyId(PetDTO pet){
+        NodeDE temp = this.headDE;
+        Boolean found = false;
+        while (temp !=null){
+            if(temp.getData().getIdentificationDE().equals(pet.getIdentificationDE())){
+                found = true;
+                break;
+            }
+            temp = temp.getNext();
+        }
+        return found ?1 :0;
+    }
+
+
+    //metodo para añadir nuevo nodo y nuevo niño en un posicion
+    public void addInpos(Pet pet, int pos) {
+        NodeDE temp = headDE;
+        for (int i = 0; i < pos; i++) {
+            temp = temp.getNext();
+        }
+        NodeDE newNode = new NodeDE(pet);
+        temp.setNext(new NodeDE(pet));
+    }
+
+
+    //metodo para eliminar niños por id
+    public void deleteByidentification(String identification){
+        NodeDE currentNodeDE = headDE;
+        NodeDE prevNode= null;
+
+        while (currentNodeDE != null && currentNodeDE.getData().getIdentificationDE()!= identification){
+            prevNode = currentNodeDE;
+            currentNodeDE = currentNodeDE.getNext();
+        }
+        if (currentNodeDE != null){
+            if (prevNode == null){
+                headDE = currentNodeDE.getNext();
+            }else{
+                prevNode.setNext(currentNodeDE.getNext());
+            }
+        }
+    }
+
+    //adelantar en posicion
+    public void advanceInpos(Pet pet, int pos) {
+        NodeDE temp = headDE;
+        for (int i = 0; i < pos; i++) {
+            temp = temp.getNext();
+        }
+        NodeDE newNode = new NodeDE(pet);
+        temp.setNext(newNode);
+    }
+    //añadir por posicion
+    public void addbyposition(Pet pet,int position){
+        NodeDE nuevoNodoDE = new NodeDE(pet);
+        if (position ==0){
+            nuevoNodoDE.setNext(headDE);
+            headDE = nuevoNodoDE;
+        }else {
+            NodeDE act = headDE;
+            for (int i = 1; i < position - 1;i++){
+                act = act.getNext();
+            }
+            nuevoNodoDE.setNext(act.getNext());
+            act.setNext(nuevoNodoDE);
+        }
+    }
+    //metodo para obtener la lista de ciudad y ademas se sabra cuantos niños y niñas hay por separado
+    public void getReportKidsByLocationGendersByAge(byte age, ReportPetsLocationGenderDTO report) {
+        if (headDE != null) {
+            NodeDE temp = this.headDE;
+            while (temp != null) {
+                if (temp.getData().getAgeDE() > age) {
+                    report.updateQuantity(
+                            temp.getData().getLocation().getName(),
+                            temp.getData().getGenderDE());
+                }
+                temp = temp.getNext();
+            }
+
+
+        }
+    }
+
+
+
+
+
+
+
+    private int getPosByIdentification(String identification){return 0;}
+    //get Kid By id
+
+    public Pet getKidByidDE(String id) {
+        NodeDE temp = headDE;
+        if (headDE != null) {
+            while (temp != null) {
+                temp.getNext();
+                while (!temp.getData().getIdentificationDE().equals(id)) {
+                    temp.getNext();
+                }
+                temp.getData();
+
+            }
+        }
+        Pet pet =new Pet(temp.getData().getName(), temp.getData().getBred(),
+                temp.getData().getIdentificationDE(),temp.getData().getAgeDE(),
+                temp.getData().getGenderDE(),temp.getData().getOwner(),temp.getData().getLocation());
+        return pet;
+
+    }
+
+
+    public int getCountKidsBylocationAndGenderM(String code){
+        int count=0;
+        int countm=0;
+        int countf=0;
+
+        if(this.headDE !=null){
+            NodeDE temp = this.headDE;
+            while (temp != null){
+                if(temp.getData().getLocation().getCode().equals(code)){
+                    count ++;
+                    if (temp.getData().getGenderDE()== 'M'){
+                        countm++;
+                    }
+                }
+            }
+            temp=temp.getNext();
+        }
+        return countm;
+    }
+    public int getCountKidsBylocationAndGenderF(String code){
+        int count=0;
+        int countm=0;
+        int countf=0;
+
+        if(this.headDE !=null){
+            NodeDE temp = this.headDE;
+            while (temp != null){
+                if(temp.getData().getLocation().getCode().equals(code)){
+                    count ++;
+                }
+            }
+            temp=temp.getNext();
+        }
+        return countf;
+    }
+    public String toString(){
+        StringBuilder sb = new StringBuilder();
+        NodeDE temp = this.headDE;
+        sb.append("[");
+        while (temp!=null){
+            sb.append(temp.getData().toString());
+            temp = temp.getNext();
+            if (temp != null){
+                sb.append(",");
+            }
+        }
+        sb.append("[");
+        return sb.toString();
+    }
 }
