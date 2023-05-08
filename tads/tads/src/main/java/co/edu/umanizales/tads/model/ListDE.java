@@ -44,10 +44,11 @@ public class ListDE {
             }
         }
         Pet pet = new Pet(temp.getData().getName(), temp.getData().getBred(),
-                temp.getData().getIdentificationDE(),temp.getData().getAgeDE(),
-                temp.getData().getGenderDE(),temp.getData().getOwner(),temp.getData().getLocation());
+                temp.getData().getIdentificationDE(), temp.getData().getAgeDE(),
+                temp.getData().getGenderDE(), temp.getData().getOwner(), temp.getData().getLocation());
     }
-//(temp.getData().getIdentificationDE(), temp.getData().getName(),temp.getAgeDE())
+
+    //(temp.getData().getIdentificationDE(), temp.getData().getName(),temp.getAgeDE())
     //get in pos by id
     public int getPosByIdDE(String id) {
         NodeDE temp = headDE;
@@ -306,21 +307,21 @@ public class ListDE {
                 temp = temp.getNext();
             }
         }
-        return "mascotas entre 0 y 3 años :"+quan1+"mascotas entre 4 y 6 años "+quan2+
-                "mascotas entre 7 y 9 años "+quan3+"mascotas entre 10 y 12 años "+quan4+
-                "mascotas entre 13 y 15 años"+quan5;
+        return "mascotas entre 0 y 3 años :" + quan1 + "mascotas entre 4 y 6 años " + quan2 +
+                "mascotas entre 7 y 9 años " + quan3 + "mascotas entre 10 y 12 años " + quan4 +
+                "mascotas entre 13 y 15 años" + quan5;
     }
 
 
-//10
-    public void addToFinalNameCharDE(String letter)throws ListDEException {
-        if (headDE!=null){
-            ListDE listCp=new ListDE();
+    //10
+    public void addToFinalNameCharDE(String letter) throws ListDEException {
+        if (headDE != null) {
+            ListDE listCp = new ListDE();
             NodeDE temp = headDE;
-            if (temp.getData().getName().startsWith(letter)){
+            if (temp.getData().getName().startsWith(letter)) {
                 listCp.addDE(temp.getData());
-                temp=temp.getNext();
-            }else{
+                temp = temp.getNext();
+            } else {
                 listCp.addDE(temp.getData());
                 temp = temp.getNext();
             }
@@ -328,12 +329,10 @@ public class ListDE {
         }
     }
 
-    public void changeExtremesDE(){
-        if (this.headDE !=null && this.headDE.getNext()!=null)
-        {
+    public void changeExtremesDE() {
+        if (this.headDE != null && this.headDE.getNext() != null) {
             NodeDE temp = this.headDE;
-            while(temp.getNext()!=null)
-            {
+            while (temp.getNext() != null) {
                 temp = temp.getNext();
             }
 
@@ -342,7 +341,6 @@ public class ListDE {
             temp.setData(copy);
         }
     }
-
 
 
     public int getCountKidsByLocationCode(String code) {
@@ -359,17 +357,17 @@ public class ListDE {
         return count;
     }
 
-    public int verifyId(PetDTO pet){
+    public int verifyId(PetDTO pet) {
         NodeDE temp = this.headDE;
         Boolean found = false;
-        while (temp !=null){
-            if(temp.getData().getIdentificationDE().equals(pet.getIdentificationDE())){
+        while (temp != null) {
+            if (temp.getData().getIdentificationDE().equals(pet.getIdentificationDE())) {
                 found = true;
                 break;
             }
             temp = temp.getNext();
         }
-        return found ?1 :0;
+        return found ? 1 : 0;
     }
 
 
@@ -385,18 +383,18 @@ public class ListDE {
 
 
     //metodo para eliminar niños por id
-    public void deleteByidentification(String identification){
+    public void deleteByidentification(String identification) {
         NodeDE currentNodeDE = headDE;
-        NodeDE prevNode= null;
+        NodeDE prevNode = null;
 
-        while (currentNodeDE != null && currentNodeDE.getData().getIdentificationDE()!= identification){
+        while (currentNodeDE != null && currentNodeDE.getData().getIdentificationDE() != identification) {
             prevNode = currentNodeDE;
             currentNodeDE = currentNodeDE.getNext();
         }
-        if (currentNodeDE != null){
-            if (prevNode == null){
+        if (currentNodeDE != null) {
+            if (prevNode == null) {
                 headDE = currentNodeDE.getNext();
-            }else{
+            } else {
                 prevNode.setNext(currentNodeDE.getNext());
             }
         }
@@ -411,21 +409,23 @@ public class ListDE {
         NodeDE newNode = new NodeDE(pet);
         temp.setNext(newNode);
     }
+
     //añadir por posicion
-    public void addbyposition(Pet pet,int position){
+    public void addbyposition(Pet pet, int position) {
         NodeDE nuevoNodoDE = new NodeDE(pet);
-        if (position ==0){
+        if (position == 0) {
             nuevoNodoDE.setNext(headDE);
             headDE = nuevoNodoDE;
-        }else {
+        } else {
             NodeDE act = headDE;
-            for (int i = 1; i < position - 1;i++){
+            for (int i = 1; i < position - 1; i++) {
                 act = act.getNext();
             }
             nuevoNodoDE.setNext(act.getNext());
             act.setNext(nuevoNodoDE);
         }
     }
+
     //metodo para obtener la lista de ciudad y ademas se sabra cuantos niños y niñas hay por separado
     public void getReportKidsByLocationGendersByAge(byte age, ReportPetsLocationGenderDTO report) {
         if (headDE != null) {
@@ -444,12 +444,9 @@ public class ListDE {
     }
 
 
-
-
-
-
-
-    private int getPosByIdentification(String identification){return 0;}
+    private int getPosByIdentification(String identification) {
+        return 0;
+    }
     //get Kid By id
 
     public Pet getKidByidDE(String id) {
@@ -464,61 +461,109 @@ public class ListDE {
 
             }
         }
-        Pet pet =new Pet(temp.getData().getName(), temp.getData().getBred(),
-                temp.getData().getIdentificationDE(),temp.getData().getAgeDE(),
-                temp.getData().getGenderDE(),temp.getData().getOwner(),temp.getData().getLocation());
+        Pet pet = new Pet(temp.getData().getName(), temp.getData().getBred(),
+                temp.getData().getIdentificationDE(), temp.getData().getAgeDE(),
+                temp.getData().getGenderDE(), temp.getData().getOwner(), temp.getData().getLocation());
         return pet;
 
     }
 
 
-    public int getCountKidsBylocationAndGenderM(String code){
-        int count=0;
-        int countm=0;
-        int countf=0;
+    public int getCountKidsBylocationAndGenderM(String code) {
+        int count = 0;
+        int countm = 0;
+        int countf = 0;
 
-        if(this.headDE !=null){
+        if (this.headDE != null) {
             NodeDE temp = this.headDE;
-            while (temp != null){
-                if(temp.getData().getLocation().getCode().equals(code)){
-                    count ++;
-                    if (temp.getData().getGenderDE()== 'M'){
+            while (temp != null) {
+                if (temp.getData().getLocation().getCode().equals(code)) {
+                    count++;
+                    if (temp.getData().getGenderDE() == 'M') {
                         countm++;
                     }
                 }
             }
-            temp=temp.getNext();
+            temp = temp.getNext();
         }
         return countm;
     }
-    public int getCountKidsBylocationAndGenderF(String code){
-        int count=0;
-        int countm=0;
-        int countf=0;
 
-        if(this.headDE !=null){
+    public int getCountKidsBylocationAndGenderF(String code) {
+        int count = 0;
+        int countm = 0;
+        int countf = 0;
+
+        if (this.headDE != null) {
             NodeDE temp = this.headDE;
-            while (temp != null){
-                if(temp.getData().getLocation().getCode().equals(code)){
-                    count ++;
+            while (temp != null) {
+                if (temp.getData().getLocation().getCode().equals(code)) {
+                    count++;
                 }
             }
-            temp=temp.getNext();
+            temp = temp.getNext();
         }
         return countf;
     }
-    public String toString(){
+
+    public String toString() {
         StringBuilder sb = new StringBuilder();
         NodeDE temp = this.headDE;
         sb.append("[");
-        while (temp!=null){
+        while (temp != null) {
             sb.append(temp.getData().toString());
             temp = temp.getNext();
-            if (temp != null){
+            if (temp != null) {
                 sb.append(",");
             }
         }
         sb.append("[");
         return sb.toString();
     }
+    /*
+    preguntamos a cabeza si tiene datos
+    si tiene datos ,
+    si el nodo que necesitamos es la cabeza le decimos a la cabeza que tome el nodo siguiente (node.next) y
+    donde esta la cabeza que tome a previous igual a nulo
+
+
+
+    le decimos a temp que recorra toda la lista y que se pare en el nodo con el id pedido
+    le decimos al nodo anteriror  (nos.previous) que tome al nodo sieguiente (node.next) de el nodo con el id pedido
+    y a el nodo siguiente que tome al nodo anterior
+
+
+    si necesitamos el ultimo nodo le dicemos al temp que tome el nodo anterior(node.previous) y que tome a next como
+    nulo
+
+
+     */
+
+    public void deletePetByIdNode(String iddentification) {
+        if (this.headDE != null) {
+
+            if (this.headDE.getData().getIdentificationDE().equals(iddentification)) {
+                headDE = headDE.getNext();
+                if (headDE != null) {
+                    headDE.setPrev(null);
+                }
+            } else {
+                NodeDE temp = headDE;
+                while (temp != null) {
+
+                    if (temp.getData().getIdentificationDE().equals(iddentification)) {
+                        temp.getPrev().setNext(temp.getNext());
+                        if (temp.getNext() != null) {
+                            temp.getNext().setPrev(temp.getPrev());
+                        }
+                        break;
+                    }
+                    temp = temp.getNext();
+
+                }
+
+            }
+        }
+    }
 }
+

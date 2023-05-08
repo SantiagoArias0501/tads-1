@@ -178,6 +178,11 @@ public class ListDEController {
         listDEService.getReportPetsByLocationGendersByAgeDE(age,report);
         return new ResponseEntity<>(new ResponseDTO(200,report, null), HttpStatus.OK);
     }
+    @GetMapping(path = "/deletepetbyidnode")
+    public ResponseEntity<ResponseDTO> deletePetByIdNode(String iddentification) {
+        listDEService.deletePetByIdNode(iddentification);
+        return new ResponseEntity<>(new ResponseDTO(200,"Se ah eliminado el pet",
+                null), HttpStatus.OK);}
 }
 
 
