@@ -1,5 +1,6 @@
 package co.edu.umanizales.tads.controller;
 
+import co.edu.umanizales.tads.ListSEException.ListSEException;
 import co.edu.umanizales.tads.controller.dto.KidDTO;
 import co.edu.umanizales.tads.controller.dto.KidsByLocationDTO;
 import co.edu.umanizales.tads.controller.dto.ReportKidsLocationGenderDTO;
@@ -31,9 +32,9 @@ public class ListSEController {
 
 
     //adicionar niños
-    @PostMapping
-    public ResponseEntity<ResponseDTO> addKid(@Valid @RequestBody KidDTO kidDTO) {
-        Location location = locationService.getLocationByCode(kidDTO.getCodeLocation());
+    @PostMapping(path = "/addkid")
+    public ResponseEntity<ResponseDTO> addKid(@Valid @RequestBody KidDTO kidDTO) throws ListSEException {
+        Location location = locationService.getLocationByCode(kidDTO.getCodelocation());
         if (location == null) {
             return new ResponseEntity<>(new ResponseDTO(
                     404, "La ubicación no existe", null), HttpStatus.OK);
@@ -63,7 +64,7 @@ public class ListSEController {
 
     //ejercicio 2 niños al comienzo
     @GetMapping(path = "/orderboystostart")
-    public ResponseEntity<ResponseDTO>orderBoysToStart(){
+    public ResponseEntity<ResponseDTO>orderBoysToStart() throws ListSEException {
         listSEService.orderBoysToStart();
         return new ResponseEntity<>(new ResponseDTO(
                 200,"niños ordenados al comienzo",null), HttpStatus.OK);
@@ -71,8 +72,8 @@ public class ListSEController {
 
     //ejercicio 3 intercalar niño niña
     @GetMapping(path = "/intercaleboyandgirl")
-    public ResponseEntity<ResponseDTO>intercalateBoyGirl(){
-        listSEService.IntercaleBoyandGirl();
+    public ResponseEntity<ResponseDTO>IntercalateBoyGirl() throws ListSEException {
+        listSEService.intercaleboyandgirl();
         return new ResponseEntity<>(new ResponseDTO(
                 200,"los niños fueron intercalados",null), HttpStatus.OK);
     }
@@ -140,24 +141,24 @@ public class ListSEController {
     //______________________________________________________________________________________________________________
 
     //ejercicio 7 ganar posicion de niño
-    @GetMapping(path = "/gainpositionkid")
-    public ResponseEntity<ResponseDTO>gainPositionById(@RequestBody Map<String, Object> requestBody){
-        String id=(String) requestBody.get("id");
+    @PostMapping(path = "/gainpositionkid")
+    public ResponseEntity<ResponseDTO>gainPositionById(@RequestBody Map<String, Object> requestBody) throws ListSEException {
+        String identification=(String) requestBody.get("identification");
         Integer gain=(Integer)requestBody.get("gain");
-        listSEService.gainPositionKid(id, gain);
+        listSEService.gainPositionKid(identification, gain);
         return new ResponseEntity<>(new ResponseDTO(
                 200,"el niño gano posicion",null), HttpStatus.OK);
     }
 
     // ejercicio 8 perder posicion de niño
-    @GetMapping(path = "/losepositionkid")
-    public ResponseEntity<ResponseDTO>losePositionById(@RequestBody Map<String, Object> requestBody){
-        String id=(String) requestBody.get("id");
-        Integer lose=(Integer)requestBody.get("lose");
-        listSEService.LosePositionKid(id, lose);
+    @PostMapping(path = "/losepositionskid")
+    public ResponseEntity<ResponseDTO> losePositionkid(@RequestBody Map<String, Object> requestBody) throws ListSEException {
+        String id = (String) requestBody.get("id");
+        Integer lose = (Integer) requestBody.get("lose");
+        listSEService.losePositionKid(id,lose);
         return new ResponseEntity<>(new ResponseDTO(
-                200,"el niño perdion posicion",null), HttpStatus.OK);
-    }
+                200, "posiciones re ordenadas", null), HttpStatus.OK);
+}
 
     //ejercicio 9
     @GetMapping(path = "/reportbyage")
@@ -168,8 +169,8 @@ public class ListSEController {
 
 
     //ejercicio 10 enviar niño al final si comienza su nombre por una letra dada
-    @GetMapping(path = "/addToFinalNameChar/{letter}")
-    public ResponseEntity<ResponseDTO>addToFinalNameChar(@PathVariable String letter){
+    @PostMapping(path = "/addToFinalNameChar/{letter}")
+    public ResponseEntity<ResponseDTO>addToFinalNameChar(@RequestBody String letter) throws ListSEException {
         listSEService.addToFinalNameChar(letter);
         return new ResponseEntity<>(new ResponseDTO(
                 200,"el niño ahora esta al final de la lista",null), HttpStatus.OK);
@@ -193,5 +194,9 @@ public class ListSEController {
         return new ResponseEntity<>(new ResponseDTO(200, report, null), HttpStatus.OK);
     }
 
-
+    @GetMapping (path = "/verifyid")
+    public ResponseEntity<ResponseDTO>getVerifyid(Kid kid){
+        listSEService.verifyId(kid);
+        return new ResponseEntity<>(new ResponseDTO(200,"verificado",null),HttpStatus.OK);
+    }
 }

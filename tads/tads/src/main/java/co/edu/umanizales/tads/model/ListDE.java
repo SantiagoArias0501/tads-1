@@ -556,7 +556,6 @@ public class ListDE {
                         if (temp.getNext() != null) {
                             temp.getNext().setPrev(temp.getPrev());
                         }
-                        break;
                     }
                     temp = temp.getNext();
 

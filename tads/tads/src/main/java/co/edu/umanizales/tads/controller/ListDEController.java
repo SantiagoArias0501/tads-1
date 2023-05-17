@@ -28,16 +28,16 @@ public class ListDEController {
     @Autowired
     private LocationService locationService;
 
-    @GetMapping(path ="/getlistde")
-    public ResponseEntity<ResponseDTO> getPets(){
-        return new ResponseEntity<>(new ResponseDTO(
-                200,listDEService.putToString(),null), HttpStatus.OK);
-    }
+        @GetMapping(path ="/getlistde")
+        public ResponseEntity<ResponseDTO> getPets(){
+            return new ResponseEntity<>(new ResponseDTO(
+                    200,listDEService.putToString(),null), HttpStatus.OK);
+        }
 
     //adicionar mascota
     @PostMapping
     public ResponseEntity<ResponseDTO> addPet(@RequestBody PetDTO petDTO){
-        Location locationDE = locationService.getLocationByCode(petDTO.getLocation());
+        Location locationDE = locationService.getLocationByCode(petDTO.getCodelocation());
         if (locationDE == null) {
             return new ResponseEntity<>(new ResponseDTO(
                     404, "La ubicación no existe", null), HttpStatus.OK);
@@ -150,7 +150,7 @@ public class ListDEController {
     }
 
     //ejercicio 9
-    @GetMapping(path = "/reportbyage")
+    @GetMapping(path = "/reportbyagepets")
     public ResponseEntity<ResponseDTO>reportByAge(){
         return new ResponseEntity<>(new ResponseDTO(
                 200,listDEService.reportByAgeDE(),null), HttpStatus.OK);

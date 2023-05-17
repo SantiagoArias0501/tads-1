@@ -26,7 +26,4 @@ public class Kid {
     private Location location;
 
 
-    public Kid(String identification, String name, byte age) {
-
-    }
 }

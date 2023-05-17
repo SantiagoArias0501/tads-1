@@ -22,6 +22,6 @@ public class PetDTO {
     private char genderDE;
     private byte ageDE;
     @Pattern(regexp = "^[MF]^",message = "el genero debe ser 'M'o'F'")
-    private String location;
+    private String codelocation;
 
 }

@@ -22,9 +22,8 @@ public class KidDTO {
     private char gender;
     @Valid
     @NotNull
-    private Location location;
+    private String codelocation;
 
-    public String getCodeLocation() {
-        return null;
-    }
+
+
 }
